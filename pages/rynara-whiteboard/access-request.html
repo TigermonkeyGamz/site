@@ -9,38 +9,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
 <style>
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Share Tech Mono', system-ui, sans-serif;
-  background: #0d0d0d;
-  color: #e3dd9d;
-  text-align: center;
-}
+body { margin:0; padding:0; font-family:'Share Tech Mono', system-ui, sans-serif; background:#0d0d0d; color:#e3dd9d; text-align:center; }
+a { color:#e3dd9d; text-decoration:none; }
+.button { background-color:#b3b302; color:#000; font-family:'Orbitron',sans-serif; font-weight:500; padding:12px 20px; border:none; border-radius:8px; width:150px; cursor:pointer; transition:all 0.3s ease; }
+.button:hover { background-color:#e3dd9d; transform:scale(1.05); box-shadow:0 0 20px #400909; }
 
-a { color: #e3dd9d; text-decoration: none; }
-.button {
-  background-color: #b3b302;
-  color: #000;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 500;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  width: 150px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.button:hover {
-  background-color: #e3dd9d;
-  transform: scale(1.05);
-  box-shadow: 0px 0px 20px #400909;
-}
-
-.site-header { position: sticky; top: 0; z-index:100; background: linear-gradient(180deg,#000,#0d0d0d); border-bottom:1px solid #222; }
-.header-inner { max-width:1750px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;justify-content:space-between; }
-.brand { display:flex;flex-direction:column;align-items:flex-start; }
-.brand-name { font-family:'Orbitron',sans-serif; font-size:28px; font-weight:800; letter-spacing:1px; background:linear-gradient(90deg,#e3dd9d,#b3b302); background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.site-header { position:sticky; top:0; z-index:100; background:linear-gradient(180deg,#000,#0d0d0d); border-bottom:1px solid #222; }
+.header-inner { max-width:1750px; margin:0 auto; padding:18px 24px; display:flex; align-items:center; justify-content:space-between; }
+.brand { display:flex; flex-direction:column; align-items:flex-start; }
+.brand-name { font-family:'Orbitron',sans-serif; font-size:28px; font-weight:800; letter-spacing:1px; background:linear-gradient(90deg,#e3dd9d,#b3b302); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 .brand-tagline { font-size:12px; opacity:0.75; margin-top:2px; }
 .header-nav { display:flex; gap:24px; }
 .header-nav a { font-family:'Orbitron',sans-serif; font-size:14px; position:relative; opacity:0.85; }
@@ -91,7 +68,6 @@ document.getElementById('emailForm').addEventListener('submit', async function(e
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email })
     });
-
 
     if(res.ok){
       status.innerText = "Your request has been submitted! ✅";
