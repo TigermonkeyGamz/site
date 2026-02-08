@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Access • TigermonkeyGamz</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================= */
+    /* GLOBAL + HEADER + BUTTONS */
+    /* ============================= */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Share Tech Mono', system-ui, sans-serif;
+      background: #0d0d0d;
+      color: #e3dd9d;
+      text-align: center;
+    }
+
+    a {
+      color: #e3dd9d;
+      text-decoration: none;
+    }
+
+    .header {
+      font-family: 'Orbitron', system-ui, sans-serif;
+      font-size: 50px;
+    }
+
+    .button {
+      background-color: #b3b302;
+      color: #000000;
+      font-family: 'Orbitron', system-ui, sans-serif;
+      font-weight: 500;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      width: 150px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .button:hover {
+      background-color: #e3dd9d;
+      color: #000000;
+      transform: scale(1.05);
+      box-shadow: 0px 0px 20px #400909;
+    }
+
+    /* ============================= */
+    /* SITE HEADER */
+    /* ============================= */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(180deg, #000000 0%, #0d0d0d 100%);
+      border-bottom: 1px solid #222;
+    }
+    .header-inner {
+      max-width: 1750px;
+      margin: 0 auto;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .brand-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #e3dd9d, #b3b302);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-tagline { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+
+    .header-nav { display: flex; gap: 24px; }
+    .header-nav a {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      opacity: 0.85;
+      position: relative;
+    }
+    .header-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: -4px;
+      width: 0%; height: 2px;
+      background: #e3dd9d;
+      transition: width 0.25s ease;
+    }
+    .header-nav a:hover::after { width: 100%; }
+    .header-nav a:hover { opacity: 1; }
+
+    @media (max-width: 700px) {
+      .header-inner { flex-direction: column; gap: 12px; }
+      .header-nav { gap: 16px; }
+    }
+
+    /* ============================= */
+    /* FORM */
+    /* ============================= */
+    .form-container {
+      margin-top: 100px;
+    }
+    input[type="email"] {
+      padding: 12px;
+      width: 250px;
+      font-family: 'Share Tech Mono', monospace;
+      border-radius: 6px;
+      border: 1px solid #e3dd9d;
+      margin-right: 10px;
+      background: #0d0d0d;
+      color: #e3dd9d;
+    }
+    #status {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!--HEADER-->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-name">TigermonkeyGamz</span>
+        <span class="brand-tagline">Indie Games • Devlogs</span>
+      </div>
+
+      <nav class="header-nav">
+        <a href="index.html">Home</a>
+        <a href="pages/games.html">Games</a>
+        <a href="pages/rynara-skill-tree.html">Rynara Skill Tree</a>
+        <a href="#">Devlogs</a>
+      </nav>
+    </div>
+  </header>
+
+  <!--MAIN CONTENT-->
+  <div class="form-container">
+    <h1 class="brand-name-large">Request Access</h1>
+    <p>Enter your email below to request access to the Canva Whiteboard. You’ll be notified if approved.</p>
+
+    <form id="emailForm">
+      <input type="email" id="userEmail" placeholder="Enter your email" required />
+      <button type="submit" class="button">Submit</button>
+    </form>
+
+    <p id="status"></p>
+  </div>
+
+  <script>
+    document.getElementById('emailForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('userEmail').value;
+      const status = document.getElementById('status');
+
+      try {
+        const res = await fetch('/submit-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        if(res.ok){
+          status.innerText = "Your request has been sent! Waiting for approval...";
+          document.getElementById('userEmail').value = '';
+        } else {
+          status.innerText = "Something went wrong. Try again later.";
+        }
+      } catch(err) {
+        status.innerText = "Server error. Try again later.";
+      }
+    });
+  </script>
+
+</body>
+</html>
