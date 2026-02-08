@@ -28,6 +28,10 @@ a {
 /* SITE HEADER */
 /* ============================= */
 
+.embedded .site-header {
+  display: none;
+}
+
 .site-header {
   position: sticky;
   top: 0;
@@ -183,9 +187,15 @@ a {
   display:none;
 }
 
+.embedded #skill-points {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+}
+
 #skill-points{
   position: absolute;
-  top: 160px;
+  top: 140px;
   left: 10px;
   color:#fff;
   font-size:18px;
@@ -236,6 +246,11 @@ a {
 <div class="tooltip" id="tooltip"></div>
 
 <script>
+
+if (window.self !== window.top) {
+  document.body.classList.add("embedded");
+}
+  
 let sp = 10;
 
 const viewport = document.getElementById('viewport');
@@ -420,6 +435,7 @@ updateCamera();
 </script>
 </body>
 </html>
+
 
 
 
