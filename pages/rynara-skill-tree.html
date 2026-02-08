@@ -3,138 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <title>Rynara Skill Tree</title>
 
 <style>
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Share Tech Mono', system-ui, sans-serif;
-  background: #0d0d0d;
-  color: #e3dd9d;
-  text-align: center;
-}
-  
-a {
-  color: #e3dd9d;
-  text-decoration: none;
+:root{
+  --header-height:70px;
 }
 
-  /* ============================= */
+body{
+  margin:0;
+  padding:0;
+  font-family:'Share Tech Mono',system-ui,sans-serif;
+  background:#0d0d0d;
+  color:#e3dd9d;
+  text-align:center;
+  overflow:hidden;
+}
+
+a{
+  color:#e3dd9d;
+  text-decoration:none;
+}
+
+/* ============================= */
 /* SITE HEADER */
 /* ============================= */
 
-.embedded .site-header {
-  display: none;
+.embedded .site-header{
+  display:none;
 }
 
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-
-  background: linear-gradient(
-    180deg,
-    #000000 0%,
-    #0d0d0d 100%
-  );
-
-  border-bottom: 1px solid #222;
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  height:var(--header-height);
+  background:linear-gradient(180deg,#000000 0%,#0d0d0d 100%);
+  border-bottom:1px solid #222;
 }
 
-.header-inner {
-  max-width: 1750px;
-  margin: 0 auto;
-  padding: 18px 24px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.header-inner{
+  max-width:1750px;
+  margin:0 auto;
+  padding:10px 24px;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
-/* ============================= */
 /* BRAND */
-/* ============================= */
-
-.brand {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+.brand{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
 }
 
-.brand-name {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: 1px;
-
-  background: linear-gradient(
-    90deg,
-    #e3dd9d,
-    #b3b302
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.brand-name{
+  font-family:'Orbitron',sans-serif;
+  font-size:28px;
+  font-weight:800;
+  letter-spacing:1px;
+  background:linear-gradient(90deg,#e3dd9d,#b3b302);
+  background-clip:text;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
 
-.brand-tagline {
-  font-size: 12px;
-  opacity: 0.75;
-  margin-top: 2px;
+.brand-tagline{
+  font-size:12px;
+  opacity:0.75;
+  margin-top:2px;
 }
 
-/* ============================= */
 /* NAV */
+.header-nav{
+  display:flex;
+  gap:24px;
+}
+
+.header-nav a{
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;
+  letter-spacing:.5px;
+  opacity:.85;
+  position:relative;
+}
+
+.header-nav a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-4px;
+  width:0%;
+  height:2px;
+  background:#e3dd9d;
+  transition:width .25s ease;
+}
+
+.header-nav a:hover::after{width:100%;}
+.header-nav a:hover{opacity:1;}
+
+/* ============================= */
+/* VIEWPORT */
 /* ============================= */
 
-.header-nav {
-  display: flex;
-  gap: 24px;
-}
-
-.header-nav a {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 14px;
-  letter-spacing: 0.5px;
-  opacity: 0.85;
-  position: relative;
-}
-
-.header-nav a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0%;
-  height: 2px;
-  background: #e3dd9d;
-  transition: width 0.25s ease;
-}
-
-.header-nav a:hover::after {
-  width: 100%;
-}
-
-.header-nav a:hover {
-  opacity: 1;
-}
-  
-
-/* Viewport (camera window) */
 #viewport{
   width:100vw;
-  height:100vh;
+  height:calc(100vh - var(--header-height));
   cursor:grab;
   position:relative;
   overflow:hidden;
 }
 
-/* World container */
+/* WORLD */
 #world{
   position:absolute;
   left:50%;
@@ -142,7 +128,7 @@ a {
   transform-origin:0 0;
 }
 
-/* Skills */
+/* SKILLS */
 .skill{
   position:absolute;
   background:#222;
@@ -187,22 +173,25 @@ a {
   display:none;
 }
 
-.embedded #skill-points {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-}
-
+/* SKILL POINTS */
 #skill-points{
+  position:fixed;
+  top:calc(var(--header-height) + 10px);
+  right:10px;
   color:#fff;
   font-size:18px;
   background:#222;
   padding:5px 10px;
   border-radius:5px;
   box-shadow:0 0 10px #000;
-  z-index:998;
+  z-index:900;
 }
 
+.embedded #skill-points{
+  top:10px;
+}
+
+/* GRID */
 #grid{
   position:absolute;
   left:-2000px;
@@ -216,230 +205,189 @@ a {
 
 <body>
 
-<!--HEADER-->
 <header class="site-header">
-  <div class="header-inner">
-    <div class="brand">
-      <span class="brand-name">TigermonkeyGamz</span>
-      <span class="brand-tagline">Indie Games • Devlogs</span>
-    </div>
+<div class="header-inner">
+<div class="brand">
+<span class="brand-name">TigermonkeyGamz</span>
+<span class="brand-tagline">Indie Games • Devlogs</span>
+</div>
 
-    <nav class="header-nav">
-      <a class="", href="https://tigermonkeygamz.github.io/site/index.html">Home</a>
-      <a href="https://tigermonkeygamz.github.io/site/pages/games.html">Games</a>
-      <a href="#">Devlogs</a>
-    </nav>
-  </div>
+<nav class="header-nav">
+<a href="https://tigermonkeygamz.github.io/site/index.html">Home</a>
+<a href="https://tigermonkeygamz.github.io/site/pages/games.html">Games</a>
+<a href="#">Devlogs</a>
+</nav>
+</div>
 </header>
 
 <div id="skill-points">Skill Points: <span id="sp-count">10</span></div>
 
 <div id="viewport">
-  <div id="world">
-    <canvas id="grid"></canvas>
-  </div>
+<div id="world">
+<canvas id="grid"></canvas>
+</div>
 </div>
 
 <div class="tooltip" id="tooltip"></div>
 
 <script>
-
-if (window.self !== window.top) {
-  document.body.classList.add("embedded");
+if(window.self!==window.top){
+document.body.classList.add("embedded");
 }
-  
-let sp = 10;
 
-const viewport = document.getElementById('viewport');
-const world = document.getElementById('world');
-const tooltip = document.getElementById('tooltip');
-const spCount = document.getElementById('sp-count');
+let sp=10;
 
-const gridCanvas = document.getElementById('grid');
-const gridCtx = gridCanvas.getContext('2d');
+const viewport=document.getElementById('viewport');
+const world=document.getElementById('world');
+const tooltip=document.getElementById('tooltip');
+const spCount=document.getElementById('sp-count');
 
-let cameraX = 0;
-let cameraY = 0;
-let zoom = 1;
+const gridCanvas=document.getElementById('grid');
+const gridCtx=gridCanvas.getContext('2d');
 
-let dragging = false;
+let cameraX=0;
+let cameraY=0;
+let zoom=1;
+
+let dragging=false;
 let lastX=0,lastY=0;
 
-/* ======================
-   SKILL DATA
-====================== */
-const skillData = [
-  { id:'skill1',name:'Way of the Warrior',desc:'Increased Melee Damage.<br>Skill: Spin',cost:2,parent:null,x:-200,y:0,size:40,borderColor:'#FF0000'},
-  { id:'skill2',name:'Shield Wall',desc:'Block incoming attacks.',cost:3,parent:'skill1',x:-350,y:-70,size:70,borderColor:'#00FF00'},
-  { id:'skill3',name:'Earth Slam',desc:'Crush enemies around you.',cost:2,parent:'skill1',x:-350,y:70,size:70,borderColor:'#0000FF'},
-  { id:'skill4',name:'War Cry',desc:'Buff allies.',cost:1,parent:'skill3',x:200,y:150,size:70,borderColor:'#FFFF00'}
+const skillData=[
+{id:'skill1',name:'Way of the Warrior',desc:'Increased Melee Damage.<br>Skill: Spin',cost:2,parent:null,x:-200,y:0,size:40,borderColor:'#FF0000'},
+{id:'skill2',name:'Shield Wall',desc:'Block incoming attacks.',cost:3,parent:'skill1',x:-350,y:-70,size:70,borderColor:'#00FF00'},
+{id:'skill3',name:'Earth Slam',desc:'Crush enemies around you.',cost:2,parent:'skill1',x:-350,y:70,size:70,borderColor:'#0000FF'},
+{id:'skill4',name:'War Cry',desc:'Buff allies.',cost:1,parent:'skill3',x:200,y:150,size:70,borderColor:'#FFFF00'}
 ];
 
-/* ======================
-   GRID
-====================== */
 function drawGrid(){
-  gridCanvas.width=4000;
-  gridCanvas.height=4000;
-  gridCtx.clearRect(0,0,4000,4000);
+gridCanvas.width=4000;
+gridCanvas.height=4000;
+gridCtx.clearRect(0,0,4000,4000);
 
-  gridCtx.strokeStyle='#333';
-  gridCtx.fillStyle='#555';
-  gridCtx.font='12px sans-serif';
+gridCtx.strokeStyle='#333';
+gridCtx.fillStyle='#555';
+gridCtx.font='12px sans-serif';
 
-  const step=100;
-  const center=2000;
+const step=100;
+const center=2000;
 
-  for(let x=0;x<=4000;x+=step){
-    gridCtx.beginPath();
-    gridCtx.moveTo(x,0);
-    gridCtx.lineTo(x,4000);
-    gridCtx.stroke();
-    gridCtx.fillText(x-center,x+2,center+12);
-  }
-
-  for(let y=0;y<=4000;y+=step){
-    gridCtx.beginPath();
-    gridCtx.moveTo(0,y);
-    gridCtx.lineTo(4000,y);
-    gridCtx.stroke();
-    gridCtx.fillText(center-y,center+2,y-2);
-  }
+for(let x=0;x<=4000;x+=step){
+gridCtx.beginPath();
+gridCtx.moveTo(x,0);
+gridCtx.lineTo(x,4000);
+gridCtx.stroke();
+gridCtx.fillText(x-center,x+2,center+12);
 }
 
-/* ======================
-   CREATE SKILLS
-====================== */
+for(let y=0;y<=4000;y+=step){
+gridCtx.beginPath();
+gridCtx.moveTo(0,y);
+gridCtx.lineTo(4000,y);
+gridCtx.stroke();
+gridCtx.fillText(center-y,center+2,y-2);
+}
+}
+
 skillData.forEach(skill=>{
-  const div=document.createElement('div');
-  div.className='skill';
-  div.id=skill.id;
+const div=document.createElement('div');
+div.className='skill';
+div.id=skill.id;
 
-  div.style.left=skill.x+'px';
-  div.style.top=skill.y+'px';
-  div.style.width=skill.size+'px';
-  div.style.height=skill.size+'px';
-  div.style.borderColor=skill.borderColor;
+div.style.left=skill.x+'px';
+div.style.top=skill.y+'px';
+div.style.width=skill.size+'px';
+div.style.height=skill.size+'px';
+div.style.borderColor=skill.borderColor;
 
-  world.appendChild(div);
+world.appendChild(div);
 
-  div.onmouseover=e=>{
-    tooltip.style.display='block';
-    tooltip.innerHTML=`<b>${skill.name}</b><br>${skill.desc}<br>SP Cost: ${skill.cost}`;
-  };
-  div.onmousemove=e=>{
-    tooltip.style.left=e.pageX+15+'px';
-    tooltip.style.top=e.pageY+15+'px';
-  };
-  div.onmouseout=()=>tooltip.style.display='none';
+div.onmouseover=e=>{
+tooltip.style.display='block';
+tooltip.innerHTML=`<b>${skill.name}</b><br>${skill.desc}<br>SP Cost: ${skill.cost}`;
+};
+div.onmousemove=e=>{
+tooltip.style.left=e.pageX+15+'px';
+tooltip.style.top=e.pageY+15+'px';
+};
+div.onmouseout=()=>tooltip.style.display='none';
 
-  div.onclick=()=>{
-    if(div.classList.contains('unlocked'))return;
-    if(sp>=skill.cost){
-      sp-=skill.cost;
-      spCount.textContent=sp;
-      div.classList.add('unlocked');
-      drawLines();
-    }
-  };
+div.onclick=()=>{
+if(div.classList.contains('unlocked'))return;
+if(sp>=skill.cost){
+sp-=skill.cost;
+spCount.textContent=sp;
+div.classList.add('unlocked');
+drawLines();
+}
+};
 });
 
-/* ======================
-   LINES
-====================== */
 function drawLines(){
-  world.querySelectorAll('.line').forEach(l=>l.remove());
+world.querySelectorAll('.line').forEach(l=>l.remove());
 
-  skillData.forEach(skill=>{
-    if(!skill.parent)return;
+skillData.forEach(skill=>{
+if(!skill.parent)return;
 
-    const parent=document.getElementById(skill.parent);
-    const child=document.getElementById(skill.id);
+const parent=document.getElementById(skill.parent);
+const child=document.getElementById(skill.id);
 
-    const px=parent.offsetLeft+parent.offsetWidth/2;
-    const py=parent.offsetTop+parent.offsetHeight/2;
-    const cx=child.offsetLeft+child.offsetWidth/2;
-    const cy=child.offsetTop+child.offsetHeight/2;
+const px=parent.offsetLeft+parent.offsetWidth/2;
+const py=parent.offsetTop+parent.offsetHeight/2;
+const cx=child.offsetLeft+child.offsetWidth/2;
+const cy=child.offsetTop+child.offsetHeight/2;
 
-    const dx=cx-px;
-    const dy=cy-py;
-    const len=Math.sqrt(dx*dx+dy*dy);
-    const angle=Math.atan2(dy,dx)*180/Math.PI;
+const dx=cx-px;
+const dy=cy-py;
+const len=Math.sqrt(dx*dx+dy*dy);
+const angle=Math.atan2(dy,dx)*180/Math.PI;
 
-    const line=document.createElement('div');
-    line.className='line';
-    line.style.width=len+'px';
-    line.style.left=px+'px';
-    line.style.top=py+'px';
-    line.style.transform=`rotate(${angle}deg)`;
+const line=document.createElement('div');
+line.className='line';
+line.style.width=len+'px';
+line.style.left=px+'px';
+line.style.top=py+'px';
+line.style.transform=`rotate(${angle}deg)`;
 
-    world.appendChild(line);
-  });
+world.appendChild(line);
+});
 }
 
-/* ======================
-   CAMERA PAN
-====================== */
 viewport.addEventListener('mousedown',e=>{
-  dragging=true;
-  viewport.style.cursor='grabbing';
-  lastX=e.clientX;
-  lastY=e.clientY;
+dragging=true;
+viewport.style.cursor='grabbing';
+lastX=e.clientX;
+lastY=e.clientY;
 });
 
 window.addEventListener('mouseup',()=>{
-  dragging=false;
-  viewport.style.cursor='grab';
+dragging=false;
+viewport.style.cursor='grab';
 });
 
 window.addEventListener('mousemove',e=>{
-  if(!dragging)return;
-  cameraX+=e.clientX-lastX;
-  cameraY+=e.clientY-lastY;
-  lastX=e.clientX;
-  lastY=e.clientY;
-  updateCamera();
+if(!dragging)return;
+cameraX+=e.clientX-lastX;
+cameraY+=e.clientY-lastY;
+lastX=e.clientX;
+lastY=e.clientY;
+updateCamera();
 });
 
-/* ======================
-   ZOOM
-====================== */
 viewport.addEventListener('wheel',e=>{
-  e.preventDefault();
-
-  const zoomFactor=1.1;
-  zoom*= e.deltaY<0 ? zoomFactor : 1/zoomFactor;
-
-  zoom=Math.min(Math.max(zoom,0.3),3);
-
-  updateCamera();
+e.preventDefault();
+const zoomFactor=1.1;
+zoom*=e.deltaY<0?zoomFactor:1/zoomFactor;
+zoom=Math.min(Math.max(zoom,0.3),3);
+updateCamera();
 },{passive:false});
 
-/* ======================
-   APPLY CAMERA
-====================== */
 function updateCamera(){
-  world.style.transform=
-    `translate(${cameraX}px,${cameraY}px) scale(${zoom})`;
+world.style.transform=`translate(${cameraX}px,${cameraY}px) scale(${zoom})`;
 }
 
-/* ======================
-   INIT
-====================== */
 drawGrid();
 drawLines();
 updateCamera();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
