@@ -30,7 +30,7 @@ a{
 }
 
 /* ============================= */
-/* SITE HEADER */
+/* HEADER */
 /* ============================= */
 
 .embedded .site-header{
@@ -42,7 +42,7 @@ a{
   top:0;
   z-index:1000;
   height:var(--header-height);
-  background:linear-gradient(180deg,#000000 0%,#0d0d0d 100%);
+  background:linear-gradient(180deg,#000 0%,#0d0d0d 100%);
   border-bottom:1px solid #222;
 }
 
@@ -113,10 +113,10 @@ a{
 /* ============================= */
 
 #viewport{
+  position:relative;
   width:100vw;
   height:calc(100vh - var(--header-height));
   cursor:grab;
-  position:relative;
   overflow:hidden;
 }
 
@@ -141,6 +141,7 @@ a{
   align-items:center;
   justify-content:center;
   border:4px solid #555;
+  z-index:5;
 }
 
 .skill:hover{
@@ -158,7 +159,7 @@ a{
   height:2px;
   background:#fff;
   transform-origin:left center;
-  z-index:-1;
+  z-index:1;
 }
 
 .tooltip{
@@ -171,13 +172,15 @@ a{
   font-size:14px;
   white-space:nowrap;
   display:none;
+  z-index:2000;
 }
 
 /* SKILL POINTS */
+
 #skill-points{
   position:fixed;
+  left:10px;
   top:calc(var(--header-height) + 10px);
-  right:10px;
   color:#fff;
   font-size:18px;
   background:#222;
@@ -191,7 +194,8 @@ a{
   top:10px;
 }
 
-/* GRID */
+/* GRID (allowed underneath) */
+
 #grid{
   position:absolute;
   left:-2000px;
