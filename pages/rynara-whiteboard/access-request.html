@@ -86,7 +86,7 @@ document.getElementById('emailForm').addEventListener('submit', async function(e
   const status = document.getElementById('status');
 
   try {
-    const res = await fetch('https://tigermonkeygamz.pythonanywhere.com/submit-email', {
+    const res = await fetch('https://tigermonkeygamz.pythonanywhere.com/email-confirmation', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email })
