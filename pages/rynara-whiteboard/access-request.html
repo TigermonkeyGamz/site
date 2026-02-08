@@ -4,11 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Request Canva Access</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
 <style>
-body { margin:0; padding:0; font-family:'Share Tech Mono', sans-serif; background:#0d0d0d; color:#e3dd9d; text-align:center; }
-.button { background-color:#b3b302; color:#000; font-family:'Orbitron',sans-serif; font-weight:500; padding:12px 20px; border:none; border-radius:8px; cursor:pointer; }
+body { margin:0; padding:0; font-family:'Share Tech Mono', system-ui, sans-serif; background:#0d0d0d; color:#e3dd9d; text-align:center; }
+a { color:#e3dd9d; text-decoration:none; }
+.button { background-color:#b3b302; color:#000; font-family:'Orbitron',sans-serif; font-weight:500; padding:12px 20px; border:none; border-radius:8px; width:150px; cursor:pointer; transition:all 0.3s ease; }
 .button:hover { background-color:#e3dd9d; transform:scale(1.05); box-shadow:0 0 20px #400909; }
+
+/* Site Header */
+.site-header { position:sticky; top:0; z-index:100; background:linear-gradient(180deg,#000,#0d0d0d); border-bottom:1px solid #222; }
+.header-inner { max-width:1750px; margin:0 auto; padding:18px 24px; display:flex; align-items:center; justify-content:space-between; }
+.brand { display:flex; flex-direction:column; align-items:flex-start; }
+.brand-name { font-family:'Orbitron',sans-serif; font-size:28px; font-weight:800; letter-spacing:1px; background:linear-gradient(90deg,#e3dd9d,#b3b302); background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.brand-tagline { font-size:12px; opacity:0.75; margin-top:2px; }
+.header-nav { display:flex; gap:24px; }
+.header-nav a { font-family:'Orbitron',sans-serif; font-size:14px; position:relative; opacity:0.85; }
+.header-nav a::after { content:""; position:absolute; left:0; bottom:-4px; width:0%; height:2px; background:#e3dd9d; transition:width 0.25s ease; }
+.header-nav a:hover::after { width:100%; } 
+.header-nav a:hover { opacity:1; }
+
 #emailForm { margin:50px auto; max-width:400px; display:flex; flex-direction:column; gap:15px; }
 #emailForm input[type="email"] { padding:10px; font-size:16px; border-radius:6px; border:1px solid #555; outline:none; }
 #status { margin-top:10px; font-size:14px; opacity:0.9; }
@@ -16,8 +33,23 @@ body { margin:0; padding:0; font-family:'Share Tech Mono', sans-serif; backgroun
 </head>
 <body>
 
-<h1>Request Canva Access</h1>
-<p>Enter your email below to request access.</p>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-name">TigermonkeyGamz</span>
+      <span class="brand-tagline">Indie Games • Devlogs</span>
+    </div>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="pages/games.html">Games</a>
+      <a href="pages/rynara-skill-tree.html">Rynara Skill Tree</a>
+      <a href="#">Devlogs</a>
+    </nav>
+  </div>
+</header>
+
+<h1 class="brand-name">Request Canva Access</h1>
+<p>Enter your email below to request access. You will be notified after approval.</p>
 
 <form id="emailForm">
   <input type="email" id="userEmail" placeholder="Enter your email" required />
@@ -32,9 +64,9 @@ document.getElementById('emailForm').addEventListener('submit', async function(e
   const status = document.getElementById('status');
 
   try {
-    const res = await fetch('https://tigermonkeygamz.pythonanywhere.com/email-confirmation', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("https://tigermonkeygamz.pythonanywhere.com/email-confirmation", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email })
     });
 
@@ -42,8 +74,7 @@ document.getElementById('emailForm').addEventListener('submit', async function(e
       status.innerText = "Your request has been submitted! ✅";
       document.getElementById('userEmail').value = '';
     } else {
-      const err = await res.json();
-      status.innerText = "Error: " + (err.error || "Something went wrong");
+      status.innerText = "Something went wrong. Please try again.";
     }
   } catch(err){
     status.innerText = "Server error. Please try later.";
