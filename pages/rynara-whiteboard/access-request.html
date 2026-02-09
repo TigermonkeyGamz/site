@@ -41,21 +41,22 @@ a { color:#e3dd9d; text-decoration:none; }
 /* ------------------ Google Form ------------------ */
 .google-form { 
   margin-top:40px; 
+  width:100%;                    /* full width like whiteboard */
   max-width:1080px; 
   margin-left:auto; 
   margin-right:auto; 
-  border:2px solid #b3b302;      /* matches whiteboard border */
-  border-radius:8px;              /* same rounded corners */
-  background-color:#ffffff;       /* white background */
-  display: inline-block;
-  box-sizing:border-box;
+  border:2px solid #b3b302;     /* matches whiteboard border */
+  border-radius:8px;             /* same rounded corners */
+  background-color:#ffffff;      /* white background */
+  box-sizing:border-box;         /* includes border in width */
+  line-height:0;                 /* removes extra inline spacing */
 }
 .google-form iframe {
-  width:100%;                     /* fill the container */
+  width:100%;                     /* fill container width */
   height:700px;                   /* keep desired height */
   border:none;                     /* remove iframe border */
-  border-radius:6px;               /* optional small rounding inside container */
-  display:block;
+  border-radius:6px;               /* optional slight rounding inside container */
+  display:block;                   /* removes inline gaps */
 }
 
 </style>
