@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Request Canva Access</title>
+
+<!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -26,9 +28,9 @@ a { color:#e3dd9d; text-decoration:none; }
 .header-nav a:hover::after { width:100%; } 
 .header-nav a:hover { opacity:1; }
 
-#emailForm { margin:50px auto; max-width:400px; display:flex; flex-direction:column; gap:15px; }
-#emailForm input[type="email"] { padding:10px; font-size:16px; border-radius:6px; border:1px solid #555; outline:none; }
-#status { margin-top:10px; font-size:14px; opacity:0.9; }
+.whiteboard-container { margin:40px auto; max-width:1080px; display:none; }
+iframe { width:100%; height:600px; border:2px solid #b3b302; border-radius:8px; }
+.google-form { margin:30px auto; max-width:600px; }
 </style>
 </head>
 <body>
@@ -48,39 +50,33 @@ a { color:#e3dd9d; text-decoration:none; }
   </div>
 </header>
 
-<h1 class="brand-name">Request Canva Access</h1>
-<p>Enter your email below to request access. You will be notified after approval.</p>
+<h1 class="brand-name">Rynara Whiteboard</h1>
+<p>The whiteboard below is only visible to approved viewers. Request access using the form!</p>
 
-<form id="emailForm">
-  <input type="email" id="userEmail" placeholder="Enter your email" required />
-  <button type="submit" class="button">Submit</button>
-</form>
-<p id="status"></p>
+<!-- Canva whiteboard embed (hidden by default) -->
+<div class="whiteboard-container" id="whiteboard">
+  <iframe src="https://www.canva.com/design/DAHAUAFa9Zc/OaMA4maeTP7jhEwrkTcsdw/view" allowfullscreen></iframe>
+</div>
+
+<!-- Google Form for requesting access -->
+<div class="google-form">
+  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSflyJNTBfGf_uVAUMKnaaJDdNtCkBZBO0JgI1LfRkF1uZsElw/viewform?embedded=true" width="100%" height="700" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+</div>
 
 <script>
-document.getElementById('emailForm').addEventListener('submit', async function(e){
-  e.preventDefault();
-  const email = document.getElementById('userEmail').value;
-  const status = document.getElementById('status');
-
-  try {
-    const res = await fetch("https://tigermonkeygamz.pythonanywhere.com/email-confirmation", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email })
-    });
-
-    if(res.ok){
-      status.innerText = "Your request has been submitted! ✅";
-      document.getElementById('userEmail').value = '';
-    } else {
-      status.innerText = "Something went wrong. Please try again.";
-    }
-  } catch(err){
-    status.innerText = "Server error. Please try later.";
-    console.error(err);
+  
+// OPTIONAL: Show whiteboard if you set a simple "soft password"
+function checkPassword() {
+  const pw = prompt("Enter password to view the whiteboard:");
+  if(pw === "YOUR_SOFT_PASSWORD") { 
+    document.getElementById("whiteboard").style.display = "block"; 
+  } else { 
+    alert("Incorrect password."); 
   }
-});
+}
+
+// You can call checkPassword() from a button if desired, but
+// the real security is still from Canva permissions.
 </script>
 
 </body>
