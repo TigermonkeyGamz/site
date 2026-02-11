@@ -1,57 +1,14 @@
-<!-- =========================================
-   RYNARA SKILL TREE EMBED DEV TOOL
-========================================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-#rynaraViewport{
-  position:relative;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:#111;
-  font-family:sans-serif;
-}
-
-#rynaraWorld{
-  position:absolute;
-  left:50%;
-  top:50%;
-}
-
-.skill{
-  position:absolute;
-  border-radius:50%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:12px;
-  text-align:center;
-  background:#222;
-  color:white;
-  user-select:none;
-  cursor:pointer;
-}
-
-.skill.locked{
-  filter:grayscale(100%);
-  opacity:.4;
-}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <title>Rynara Skill Tree</title>
 
-canvas{
-  position:absolute;
-  left:0;
-  top:0;
-  pointer-events:none;
-}
 <style>
 :root{--header-height:100px;}
 body{margin:0;padding:0;font-family:'Share Tech Mono',system-ui,sans-serif;background:#0d0d0d;color:#e3dd9d;text-align:center;overflow:hidden;}
@@ -71,43 +28,10 @@ a{color:#e3dd9d;text-decoration:none;}
 .skill{position:absolute;background:#222;border-radius:50%;cursor:pointer;user-select:none;transition:.2s;box-shadow:0 0 10px rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;border:4px solid #555;z-index:5;}
 .skill:hover{background:#444;box-shadow:0 0 15px #fff;}
 .unlocked{background:#d4a526!important;box-shadow:0 0 20px gold;}
-.locked{filter:grayscale(100%);opacity:.4;}
 .line{position:absolute;height:2px;background:#fff;transform-origin:left center;z-index:1;}
 .tooltip{position:absolute;background:rgba(0,0,0,.85);color:#fff;padding:6px 10px;border-radius:5px;pointer-events:none;font-size:14px;white-space:nowrap;display:none;z-index:2000;}
 #skill-points{position:fixed;left:10px;top:calc(var(--header-height) + 10px);color:#fff;font-size:18px;background:#222;padding:5px 10px;border-radius:5px;box-shadow:0 0 10px #000;z-index:900;}
 #grid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:-2;}
-
-/* DEV BUTTON */
-#devButton{
-  position:absolute;
-  right:10px;
-  top:10px;
-  width:22px;
-  height:22px;
-  background:#444;
-  cursor:pointer;
-  z-index:50;
-}
-
-/* DEV PANEL */
-#devPanel{
-  position:absolute;
-  right:10px;
-  top:40px;
-  background:#222;
-  color:white;
-  padding:10px;
-  display:none;
-  z-index:100;
-position:fixed;
-top:calc(var(--header-height) + 10px);
-right:10px;
-width:24px;
-height:24px;
-background:#444;
-cursor:pointer;
-z-index:999;
-}
 </style>
 </head>
 <body>
@@ -119,7 +43,6 @@ z-index:999;
 <span class="brand-tagline">Indie Games • Devlogs</span>
 </div>
 
-<div id="rynaraViewport">
 <nav class="header-nav">
 <a href="https://tigermonkeygamz.github.io/site/index.html">Home</a>
 <a href="https://tigermonkeygamz.github.io/site/pages/games.html">Games</a>
@@ -128,22 +51,12 @@ z-index:999;
 </div>
 </header>
 
-<div id="devButton"></div>
-
-<div id="devPanel">
-  <b>DEV MODE</b><br>
-  <button id="enableDev">Enable Editing</button>
-</div>
 <div id="skill-points">Skill Points: <span id="sp-count">10</span></div>
 
-<div id="rynaraWorld">
-  <canvas id="grid"></canvas>
-  <canvas id="lines"></canvas>
 <div id="viewport">
 <div id="world">
 <canvas id="grid"></canvas>
 </div>
-
 </div>
 
 <div class="tooltip" id="tooltip"></div>
@@ -151,45 +64,7 @@ z-index:999;
 <script>
 if(window.self!==window.top) document.body.classList.add("embedded");
 
-/* ===================
- CONFIG
-=================== */
-const DEV_PASSWORD="rynara-dev";
-let DEV_MODE=false;
-const DEV_PASSWORD="rynara-dev";
-
-const gridSize=4000;
-const gridCenter=gridSize/2;
-const step=100;
-
-/* ===================
- DOM
-=================== */
-const viewport=document.getElementById("rynaraViewport");
-const world=document.getElementById("rynaraWorld");
-
-const gridCanvas=document.getElementById("grid");
-const gridCtx=gridCanvas.getContext("2d");
-
-const lineCanvas=document.getElementById("lines");
-const lineCtx=lineCanvas.getContext("2d");
-document.getElementById("devButton").onclick=()=>{
-const pass=prompt("Dev Password:");
-if(pass===DEV_PASSWORD){
-DEV_MODE=true;
-alert("Dev Mode Enabled");
-}
-};
-
-gridCanvas.width=lineCanvas.width=gridSize;
-gridCanvas.height=lineCanvas.height=gridSize;
 let sp=10;
-const unlockedSkills=new Set();
-
-/* ===================
- DEV PANEL
-=================== */
-const devPanel=document.getElementById("devPanel");
 const viewport=document.getElementById('viewport');
 const world=document.getElementById('world');
 const tooltip=document.getElementById('tooltip');
@@ -197,314 +72,146 @@ const spCount=document.getElementById('sp-count');
 const gridCanvas=document.getElementById('grid');
 const gridCtx=gridCanvas.getContext('2d');
 
-document.getElementById("devButton").onclick=()=>{
-  devPanel.style.display=
-  devPanel.style.display==="block"?"none":"block";
-};
 let cameraX=0,cameraY=0,zoom=1,dragging=false,lastX=0,lastY=0;
 
-document.getElementById("enableDev").onclick=()=>{
-  const pass=prompt("Dev Password?");
-  if(pass===DEV_PASSWORD){
-    DEV_MODE=true;
-    alert("Dev Mode Enabled");
-  }
-};
 const gridSize=4000;
 const gridCenter=gridSize/2;
 
-/* ===================
- COORDS
-=================== */
-function worldX(x){return gridCenter+x;}
-function worldY(y){return gridCenter-y;}
-function worldX(x){ return x; }
-function worldY(y){ return -y; }
+// helper functions: math coords → CSS coords
+function worldX(x){ return x; } // now world coordinates are centered in #world
+function worldY(y){ return -y; } // +Y is up
 
-/* ===================
- SKILLS
-=================== */
-/* ================
-SKILLS
-================ */
+  /* ================
+  SKILLS
+  ================ */
 const skillData=[
-   {id:'warrior',name:'Way of the Warrior',cost:2,parent:null,x:-200,y:0,size:45,borderColor:'#FF0000'},
-   {id:'flurry',name:'Flurry',cost:3,parent:'warrior',x:-350,y:0,size:60,borderColor:'#FF0000'},
-   {id:'jump',name:'Jump',cost:2,parent:'flurry',x:-550,y:-70,size:60,borderColor:'#FF0000'},
-   {id:'p-parry',name:'Power Parry',cost:1,parent:'flurry',x:-550,y:70,size:60,borderColor:'#FF0000'},
-   {id:'+block',name:'Increased Shield',cost:1,parent:'p-parry',x:-700,y:100,size:45,borderColor:'#FF0000'},
-   {id:'+armor',name:'Increased Armor',cost:1,parent:'p-parry',x:-700,y:40,size:45,borderColor:'#FF0000'}
+  {id:'warrior',name:'Way of the Warrior',desc:'Increased Melee Damage<br>Skill: Spin',cost:2,parent:null,x:-200,y:0,size:40,borderColor:'#FF0000'},
+  {id:'flurry',name:'Flurry',desc:'Attack multiple times in an instant',cost:3,parent:'warrior',x:-350,y:0,size:70,borderColor:'#FF0000'},
+  {id:'jump',name:'Jump',desc:'Jump in the air and strike enemies',cost:2,parent:'flurry',x:-550,y:-70,size:70,borderColor:'#FF0000'},
+  {id:'p-parry',name:'Power Parry',desc:'Parry as you put up your shield',cost:1,parent:'flurry',x:-550,y:70,size:70,borderColor:'#FF0000'},
+  {id:'+block',name:'Increased Shield',desc:'Shields are 5% more effective',cost:1,parent:'p-parry',x:-700,y:100,size:45,borderColor:'#FF0000'}
+];
 
 
-let unlocked=new Set();
-const skillMap={};
-
-/* ===================
- GRID
-=================== */
 function drawGrid(){
+  gridCanvas.width=gridSize;
+  gridCanvas.height=gridSize;
   gridCtx.clearRect(0,0,gridSize,gridSize);
-  gridCtx.strokeStyle="#333";
 
-  for(let x=0;x<=gridSize;x+=step){
+  gridCtx.strokeStyle='#333';
+  gridCtx.fillStyle='#555';
+  gridCtx.font='12px sans-serif';
+  const step=100;
+
+  for(let x=-gridCenter;x<=gridCenter;x+=step){
     gridCtx.beginPath();
-    gridCtx.moveTo(x,0);
-    gridCtx.lineTo(x,gridSize);
+    gridCtx.moveTo(x+gridCenter,0);
+    gridCtx.lineTo(x+gridCenter,gridSize);
     gridCtx.stroke();
+    gridCtx.fillText(x, x+gridCenter+2, gridCenter+12);
   }
 
-  for(let y=0;y<=gridSize;y+=step){
+  for(let y=-gridCenter;y<=gridCenter;y+=step){
     gridCtx.beginPath();
-    gridCtx.moveTo(0,y);
-    gridCtx.lineTo(gridSize,y);
+    gridCtx.moveTo(0,y+gridCenter);
+    gridCtx.lineTo(gridSize,y+gridCenter);
     gridCtx.stroke();
+    gridCtx.fillText(y, gridCenter+2, gridCenter - y -2);
   }
-gridCanvas.width=gridSize;
-gridCanvas.height=gridSize;
-gridCtx.clearRect(0,0,gridSize,gridSize);
-gridCtx.strokeStyle='#333';
-const step=100;
-for(let x=-gridCenter;x<=gridCenter;x+=step){
-gridCtx.beginPath();
-gridCtx.moveTo(x+gridCenter,0);
-gridCtx.lineTo(x+gridCenter,gridSize);
-gridCtx.stroke();
-}
-for(let y=-gridCenter;y<=gridCenter;y+=step){
-gridCtx.beginPath();
-gridCtx.moveTo(0,y+gridCenter);
-gridCtx.lineTo(gridSize,y+gridCenter);
-gridCtx.stroke();
 }
 
-/* ===================
- AVAILABILITY
-=================== */
-function available(skill){
-  if(!skill.parent)return true;
-  return unlocked.has(skill.parent);
-}
-
-/* ===================
- BUILD SKILLS
-=================== */
-function buildSkills(){
-
-  skillData.forEach(skill=>{
-
-    const div=document.createElement("div");
-    div.className="skill";
-    div.innerHTML=skill.name;
-
-    div.style.width=skill.size+"px";
-    div.style.height=skill.size+"px";
-    div.style.border="3px solid "+skill.borderColor;
-
-    positionSkill(div,skill);
-function isUnlocked(id){
-return unlockedSkills.has(id);
-}
-
-    if(!available(skill))
-      div.classList.add("locked");
-function parentUnlocked(skill){
-if(!skill.parent) return true;
-return unlockedSkills.has(skill.parent);
-}
-
-    div.onclick=e=>{
-      e.stopPropagation();
-      if(!available(skill))return;
-      unlocked.add(skill.id);
-      refreshSkills();
-    };
+// create skills
 skillData.forEach(skill=>{
-const div=document.createElement('div');
-div.className='skill';
-div.id=skill.id;
+  const div=document.createElement('div');
+  div.className='skill';
+  div.id=skill.id;
 
-    enableSkillDrag(div,skill);
-div.style.left  = worldX(skill.x) - skill.size/2 + 'px';
-div.style.top   = worldY(skill.y) - skill.size/2 + 'px';
-div.style.width = skill.size + 'px';
-div.style.height= skill.size + 'px';
-div.style.borderColor=skill.borderColor;
+  div.style.left  = worldX(skill.x) - skill.size/2 + 'px';
+  div.style.top   = worldY(skill.y) - skill.size/2 + 'px';
+  div.style.width = skill.size + 'px';
+  div.style.height= skill.size + 'px';
+  div.style.borderColor=skill.borderColor;
+  world.appendChild(div);
 
-    world.appendChild(div);
-    skillMap[skill.id]=div;
-  });
-if(!parentUnlocked(skill))
-div.classList.add('locked');
-
-}
-world.appendChild(div);
-
-function refreshSkills(){
-  skillData.forEach(skill=>{
-    const div=skillMap[skill.id];
-    if(available(skill))div.classList.remove("locked");
-    else div.classList.add("locked");
-  });
-  drawLines();
-div.onmouseover=e=>{
-tooltip.style.display='block';
-tooltip.innerHTML=`<b>${skill.name}</b><br>${skill.desc}<br>SP Cost: ${skill.cost}`;
-};
-div.onmousemove=e=>{
-tooltip.style.left=e.pageX+15+'px';
-tooltip.style.top=e.pageY+15+'px';
-};
-div.onmouseout=()=>tooltip.style.display='none';
-
-div.onclick=()=>{
-if(!parentUnlocked(skill)) return;
-if(isUnlocked(skill.id)) return;
-if(sp>=skill.cost){
-sp-=skill.cost;
-spCount.textContent=sp;
-div.classList.remove('locked');
-div.classList.add('unlocked');
-unlockedSkills.add(skill.id);
-updateLocks();
-drawLines();
-}
-
-function positionSkill(div,skill){
-  div.style.left=(worldX(skill.x)-skill.size/2)+"px";
-  div.style.top=(worldY(skill.y)-skill.size/2)+"px";
-};
-});
-
-function updateLocks(){
-skillData.forEach(skill=>{
-const el=document.getElementById(skill.id);
-if(!parentUnlocked(skill) && !isUnlocked(skill.id))
-el.classList.add('locked');
-});
-}
-
-/* ===================
- LINES
-=================== */
-function drawLines(){
-  lineCtx.clearRect(0,0,gridSize,gridSize);
-  lineCtx.strokeStyle="#888";
-  lineCtx.lineWidth=2;
-
-  skillData.forEach(skill=>{
-    if(!skill.parent)return;
-    const parent=skillData.find(s=>s.id===skill.parent);
-
-    lineCtx.beginPath();
-    lineCtx.moveTo(worldX(skill.x),worldY(skill.y));
-    lineCtx.lineTo(worldX(parent.x),worldY(parent.y));
-    lineCtx.stroke();
-  });
-world.querySelectorAll('.line').forEach(l=>l.remove());
-
-skillData.forEach(skill=>{
-if(!skill.parent) return;
-const parent=document.getElementById(skill.parent);
-const child=document.getElementById(skill.id);
-
-const px=parent.offsetLeft+parent.offsetWidth/2;
-const py=parent.offsetTop+parent.offsetHeight/2;
-const cx=child.offsetLeft+child.offsetWidth/2;
-const cy=child.offsetTop+child.offsetHeight/2;
-
-const dx=cx-px;
-const dy=cy-py;
-const len=Math.sqrt(dx*dx+dy*dy);
-const angle=Math.atan2(dy,dx)*180/Math.PI;
-
-const line=document.createElement('div');
-line.className='line';
-line.style.width=len+'px';
-line.style.left=px+'px';
-line.style.top=py+'px';
-line.style.transform=`rotate(${angle}deg)`;
-world.appendChild(line);
-});
-}
-
-/* ===================
- SKILL DRAG
-=================== */
-function enableSkillDrag(div,skill){
-
-  let dragging=false;
-
-  div.onmousedown=e=>{
-    if(!DEV_MODE)return;
-    dragging=true;
-    e.stopPropagation();
+  div.onmouseover=e=>{
+    tooltip.style.display='block';
+    tooltip.innerHTML=`<b>${skill.name}</b><br>${skill.desc}<br>SP Cost: ${skill.cost}`;
   };
+  div.onmousemove=e=>{
+    tooltip.style.left=e.pageX+15+'px';
+    tooltip.style.top=e.pageY+15+'px';
+  };
+  div.onmouseout=()=>tooltip.style.display='none';
 
-  window.addEventListener("mousemove",e=>{
-    if(!dragging)return;
+  div.onclick=()=>{
+    if(div.classList.contains('unlocked'))return;
+    if(sp>=skill.cost){
+      sp-=skill.cost;
+      spCount.textContent=sp;
+      div.classList.add('unlocked');
+      drawLines();
+    }
+  };
+});
 
-    skill.x+=e.movementX;
-    skill.y-=e.movementY;
+function drawLines(){
+  world.querySelectorAll('.line').forEach(l=>l.remove());
 
-    positionSkill(div,skill);
-    drawLines();
+  skillData.forEach(skill=>{
+    if(!skill.parent) return;
+    const parent=document.getElementById(skill.parent);
+    const child=document.getElementById(skill.id);
+
+    const px=parent.offsetLeft+parent.offsetWidth/2;
+    const py=parent.offsetTop+parent.offsetHeight/2;
+    const cx=child.offsetLeft+child.offsetWidth/2;
+    const cy=child.offsetTop+child.offsetHeight/2;
+
+    const dx=cx-px;
+    const dy=cy-py;
+    const len=Math.sqrt(dx*dx+dy*dy);
+    const angle=Math.atan2(dy,dx)*180/Math.PI;
+
+    const line=document.createElement('div');
+    line.className='line';
+    line.style.width=len+'px';
+    line.style.left=px+'px';
+    line.style.top=py+'px';
+    line.style.transform=`rotate(${angle}deg)`;
+    world.appendChild(line);
   });
+}
 
-  window.addEventListener("mouseup",()=>dragging=false);
+// drag & zoom
 viewport.addEventListener('mousedown',e=>{
-dragging=true; viewport.style.cursor='grabbing';
-lastX=e.clientX; lastY=e.clientY;
+  dragging=true; viewport.style.cursor='grabbing';
+  lastX=e.clientX; lastY=e.clientY;
 });
 window.addEventListener('mouseup',()=>{dragging=false; viewport.style.cursor='grab';});
 window.addEventListener('mousemove',e=>{
-if(!dragging) return;
-cameraX += e.clientX - lastX; cameraY += e.clientY - lastY;
-lastX = e.clientX; lastY = e.clientY;
-updateCamera();
+  if(!dragging) return;
+  cameraX += e.clientX - lastX; cameraY += e.clientY - lastY;
+  lastX = e.clientX; lastY = e.clientY;
+  updateCamera();
 });
 viewport.addEventListener('wheel',e=>{
-e.preventDefault();
-const zoomFactor=1.1;
-zoom *= e.deltaY<0 ? zoomFactor : 1/zoomFactor;
-zoom = Math.min(Math.max(zoom,0.3),3);
-updateCamera();
+  e.preventDefault();
+  const zoomFactor=1.1;
+  zoom *= e.deltaY<0 ? zoomFactor : 1/zoomFactor;
+  zoom = Math.min(Math.max(zoom,0.3),3);
+  updateCamera();
 },{passive:false});
 
 function updateCamera(){
-const bounds=1800;
-const minX=-bounds*zoom, maxX=bounds*zoom, minY=-bounds*zoom, maxY=bounds*zoom;
-cameraX = Math.max(minX, Math.min(maxX, cameraX));
-cameraY = Math.max(minY, Math.min(maxY, cameraY));
-world.style.transform = `translate(${cameraX}px,${cameraY}px) scale(${zoom})`;
+  const bounds=1800;
+  const minX=-bounds*zoom, maxX=bounds*zoom, minY=-bounds*zoom, maxY=bounds*zoom;
+  cameraX = Math.max(minX, Math.min(maxX, cameraX));
+  cameraY = Math.max(minY, Math.min(maxY, cameraY));
+  world.style.transform = `translate(${cameraX}px,${cameraY}px) scale(${zoom})`;
 }
 
-/* ===================
- CAMERA
-=================== */
-let camX=0,camY=0;
-let camDrag=false;
-
-viewport.onmousedown=()=>camDrag=true;
-window.onmouseup=()=>camDrag=false;
-
-window.onmousemove=e=>{
-  if(!camDrag)return;
-
-  camX+=e.movementX;
-  camY+=e.movementY;
-
-  world.style.transform=
-  `translate(calc(-50% + ${camX}px),calc(-50% + ${camY}px))`;
-};
-
-/* ===================
- INIT
-=================== */
-world.style.transform="translate(-50%,-50%)";
 drawGrid();
-buildSkills();
 drawLines();
-
 updateCamera();
 </script>
 </body>
